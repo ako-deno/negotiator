@@ -28,7 +28,7 @@ function parseAcceptEncoding(accept: string): Encoding[] {
   let minQuality = 1;
   const parsedEncodings: Encoding[] = [];
 
-  for (let i = 0, j = 0; i < accepts.length; i++) {
+  for (let i = 0; i < accepts.length; i++) {
     const encoding = parseEncoding(accepts[i].trim(), i);
 
     if (encoding) {
