@@ -9,6 +9,8 @@
 
 import { preferredCharsets } from "./src/charset.ts";
 import { preferredEncodings } from "./src/encoding.ts";
+import { preferredLanguages } from "./src/language.ts";
+import { preferredMediaTypes } from "./src/media_type.ts";
 
 class Negotiator {
   constructor(headers: Headers) {
@@ -32,6 +34,24 @@ class Negotiator {
 
   encodings(available?: string[]): string[] {
     return preferredEncodings(this.headers.get("accept-encoding"), available);
+  }
+
+  language(available?: string[]): string {
+    const set = this.languages(available);
+    return set && set[0];
+  }
+
+  languages(available?: string[]): string[] {
+    return preferredLanguages(this.headers.get("accept-language"), available);
+  }
+
+  mediaType(available?: string[]): string {
+    const set = this.mediaTypes(available);
+    return set && set[0];
+  }
+
+  mediaTypes(available?: string[]): string[] {
+    return preferredMediaTypes(this.headers.get("accept"), available);
   }
 }
 

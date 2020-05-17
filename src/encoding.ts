@@ -87,7 +87,7 @@ function getEncodingPriority(
   encoding: string,
   accepted: Encoding[],
   index: number,
-) {
+): Priority {
   let priority = { o: -1, q: 0, s: 0 };
 
   for (let i = 0; i < accepted.length; i++) {
@@ -159,20 +159,20 @@ function preferredEncodings(
 /**
  * Compare two specs.
  */
-function compareSpecs(a: any, b: any) {
+function compareSpecs(a: any, b: any): number {
   return (b.q - a.q) || (b.s - a.s) || (a.o - b.o) || (a.i - b.i) || 0;
 }
 
 /**
  * Get full encoding string.
  */
-function getFullEncoding(spec: Encoding) {
+function getFullEncoding(spec: Encoding): string {
   return spec.encoding;
 }
 
 /**
  * Check if a spec has any quality.
  */
-function isQuality(spec: Encoding | Priority) {
+function isQuality(spec: Encoding | Priority): boolean {
   return spec.q > 0;
 }
