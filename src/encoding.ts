@@ -3,6 +3,7 @@
  * Copyright(c) 2012 Isaac Z. Schlueter
  * Copyright(c) 2014 Federico Romero
  * Copyright(c) 2014-2015 Douglas Christopher Wilson
+ * Copyright(c) 2020 Henry Zhuang
  * MIT Licensed
  */
 
