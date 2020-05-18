@@ -8,7 +8,7 @@ An HTTP content negotiator for Deno. Based on `https://github.com/jshttp/negotia
 ## API
 
 ```TypeScript
-import Negotiator from "https://raw.githubusercontent.com/ako-deno/negotiator/master/mod.ts";
+import Negotiator from "https://deno.land/x/negotiator/mod.ts";
 ```
 
 ### Accept Negotiation
