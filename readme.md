@@ -1,6 +1,6 @@
 # negotiator
 
-[![tag](https://img.shields.io/github/tag/ako-deno/negotiator.svg)](https://github.com/ako-deno/negotiator)
+[![tag](https://img.shields.io/github/tag/ako-deno/negotiator.svg)](https://github.com/ako-deno/negotiator/tags)
 ![negotiator-ci](https://github.com/ako-deno/negotiator/workflows/negotiator-ci/badge.svg)
 
 An HTTP content negotiator for Deno. Based on `https://github.com/jshttp/negotiator`.
