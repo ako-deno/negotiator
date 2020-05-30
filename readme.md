@@ -2,6 +2,7 @@
 
 [![tag](https://img.shields.io/github/tag/ako-deno/negotiator.svg)](https://github.com/ako-deno/negotiator/tags)
 ![negotiator-ci](https://github.com/ako-deno/negotiator/workflows/negotiator-ci/badge.svg)
+[![HitCount](http://hits.dwyl.com/ako-deno/negotiator.svg)](http://hits.dwyl.com/ako-deno/negotiator)
 
 An HTTP content negotiator for Deno. Based on `https://github.com/jshttp/negotiator`.
 
