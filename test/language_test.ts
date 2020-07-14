@@ -1,87 +1,87 @@
 import {
   assertEquals,
-  assertStrictEq,
-} from "https://deno.land/std/testing/asserts.ts";
+  assertStrictEquals,
+} from "./deps.ts";
 import Negotiator from "../mod.ts";
 
 const { test } = Deno;
 
 test("negotiator.language() when no Accept-Language should return *", () => {
   const negotiator = new Negotiator(new Headers());
-  assertStrictEq(negotiator.language(), "*");
+  assertStrictEquals(negotiator.language(), "*");
 });
 
 test("negotiator.language() when Accept-Language: * should return *", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Language", "*"]]));
-  assertStrictEq(negotiator.language(), "*");
+  assertStrictEquals(negotiator.language(), "*");
 });
 
 test("negotiator.language() when Accept-Language: *, en should return *", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "*, en"]]),
   );
-  assertStrictEq(negotiator.language(), "*");
+  assertStrictEquals(negotiator.language(), "*");
 });
 
 test("negotiator.language() when Accept-Language: *, en;q=0 should return *", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "*, en;q=0"]]),
   );
-  assertStrictEq(negotiator.language(), "*");
+  assertStrictEquals(negotiator.language(), "*");
 });
 
 test("negotiator.language() when Accept-Language: *;q=0.8, en, es should return en", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "*;q=0.8, en, es"]]),
   );
-  assertStrictEq(negotiator.language(), "en");
+  assertStrictEquals(negotiator.language(), "en");
 });
 
 test("negotiator.language() when Accept-Language: en should return en", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Language", "en"]]));
-  assertStrictEq(negotiator.language(), "en");
+  assertStrictEquals(negotiator.language(), "en");
 });
 
 test("negotiator.language() when Accept-Language: en;q=0 should return undefined", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en;q=0"]]),
   );
-  assertStrictEq(negotiator.language(), undefined);
+  assertStrictEquals(negotiator.language(), undefined);
 });
 
 test("negotiator.language() when Accept-Language: en;q=0.8, es should return es", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en;q=0.8, es"]]),
   );
-  assertStrictEq(negotiator.language(), "es");
+  assertStrictEquals(negotiator.language(), "es");
 });
 
 test("negotiator.language() when Accept-Language: en;q=0.9, es;q=0.8, en;q=0.7 should return en", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en;q=0.9, es;q=0.8, en;q=0.7"]]),
   );
-  assertStrictEq(negotiator.language(), "en");
+  assertStrictEquals(negotiator.language(), "en");
 });
 
 test("negotiator.language() when Accept-Language: en-US, en;q=0.8 should return en-US", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en-US, en;q=0.8"]]),
   );
-  assertStrictEq(negotiator.language(), "en-US");
+  assertStrictEquals(negotiator.language(), "en-US");
 });
 
 test("negotiator.language() when Accept-Language: en-US, en-GB should return en-US", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en-US, en-GB"]]),
   );
-  assertStrictEq(negotiator.language(), "en-US");
+  assertStrictEquals(negotiator.language(), "en-US");
 });
 
 test("negotiator.language() when Accept-Language: en-US;q=0.8, es should return es", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en-US;q=0.8, es"]]),
   );
-  assertStrictEq(negotiator.language(), "es");
+  assertStrictEquals(negotiator.language(), "es");
 });
 
 test("negotiator.language() when Accept-Language: nl;q=0.5, fr, de, en, it, es, pt, no, se, fi, ro should return fr", () => {
@@ -90,149 +90,149 @@ test("negotiator.language() when Accept-Language: nl;q=0.5, fr, de, en, it, es, 
       [["Accept-Language", "nl;q=0.5, fr, de, en, it, es, pt, no, se, fi, ro"]],
     ),
   );
-  assertStrictEq(negotiator.language(), "fr");
+  assertStrictEquals(negotiator.language(), "fr");
 });
 
 test("negotiator.language(array) when no Accept-Language should return undefined for empty list", () => {
   const negotiator = new Negotiator(new Headers());
-  assertStrictEq(negotiator.language([]), undefined);
+  assertStrictEquals(negotiator.language([]), undefined);
 });
 
 test("negotiator.language(array) when no Accept-Language should return first language in list", () => {
   const negotiator = new Negotiator(new Headers());
-  assertStrictEq(negotiator.language(["en"]), "en");
-  assertStrictEq(negotiator.language(["es", "en"]), "es");
+  assertStrictEquals(negotiator.language(["en"]), "en");
+  assertStrictEquals(negotiator.language(["es", "en"]), "es");
 });
 
 test("negotiator.language(array) when Accept-Language: * should return undefined for empty list", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Language", "*"]]));
-  assertStrictEq(negotiator.language([]), undefined);
+  assertStrictEquals(negotiator.language([]), undefined);
 });
 
 test("negotiator.language(array) when Accept-Language: * should return first language in list", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Language", "*"]]));
-  assertStrictEq(negotiator.language(["en"]), "en");
-  assertStrictEq(negotiator.language(["es", "en"]), "es");
+  assertStrictEquals(negotiator.language(["en"]), "en");
+  assertStrictEquals(negotiator.language(["es", "en"]), "es");
 });
 
 test("negotiator.language(array) when Accept-Language: *, en should return undefined for empty list", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "*, en"]]),
   );
-  assertStrictEq(negotiator.language([]), undefined);
+  assertStrictEquals(negotiator.language([]), undefined);
 });
 
 test("negotiator.language(array) when Accept-Language: *, en should return most preferred language", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "*, en"]]),
   );
-  assertStrictEq(negotiator.language(["en"]), "en");
-  assertStrictEq(negotiator.language(["es", "en"]), "en");
+  assertStrictEquals(negotiator.language(["en"]), "en");
+  assertStrictEquals(negotiator.language(["es", "en"]), "en");
 });
 
 test("negotiator.language(array) when Accept-Language: *, en;q=0 should return undefined for empty list", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "*, en;q=0"]]),
   );
-  assertStrictEq(negotiator.language([]), undefined);
+  assertStrictEquals(negotiator.language([]), undefined);
 });
 
 test("negotiator.language(array) when Accept-Language: *, en;q=0 should exclude en", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "*, en;q=0"]]),
   );
-  assertStrictEq(negotiator.language(["en"]), undefined);
-  assertStrictEq(negotiator.language(["es", "en"]), "es");
+  assertStrictEquals(negotiator.language(["en"]), undefined);
+  assertStrictEquals(negotiator.language(["es", "en"]), "es");
 });
 
 test("negotiator.language(array) when Accept-Language: *;q=0.8, en, es should prefer en and es over everything", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "*;q=0.8, en, es"]]),
   );
-  assertStrictEq(negotiator.language(["en", "nl"]), "en");
-  assertStrictEq(negotiator.language(["ro", "nl"]), "ro");
+  assertStrictEquals(negotiator.language(["en", "nl"]), "en");
+  assertStrictEquals(negotiator.language(["ro", "nl"]), "ro");
 });
 
 test("negotiator.language(array) when Accept-Language: en should return undefined for empty list", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Language", "en"]]));
-  assertStrictEq(negotiator.language([]), undefined);
+  assertStrictEquals(negotiator.language([]), undefined);
 });
 
 test("negotiator.language(array) when Accept-Language: en should return preferred langauge", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Language", "en"]]));
-  assertStrictEq(negotiator.language(["en"]), "en");
-  assertStrictEq(negotiator.language(["es", "en"]), "en");
+  assertStrictEquals(negotiator.language(["en"]), "en");
+  assertStrictEquals(negotiator.language(["es", "en"]), "en");
 });
 
 test("negotiator.language(array) when Accept-Language: en should accept en-US, preferring en over en-US", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Language", "en"]]));
-  assertStrictEq(negotiator.language(["en-US"]), "en-US");
-  assertStrictEq(negotiator.language(["en-US", "en"]), "en");
-  assertStrictEq(negotiator.language(["en", "en-US"]), "en");
+  assertStrictEquals(negotiator.language(["en-US"]), "en-US");
+  assertStrictEquals(negotiator.language(["en-US", "en"]), "en");
+  assertStrictEquals(negotiator.language(["en", "en-US"]), "en");
 });
 
 test("negotiator.language(array) when Accept-Language: en;q=0 should return undefined for empty list", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en;q=0"]]),
   );
-  assertStrictEq(negotiator.language([]), undefined);
+  assertStrictEquals(negotiator.language([]), undefined);
 });
 
 test("negotiator.language(array) when Accept-Language: en;q=0 should accept en-US, preferring en over en-US", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en;q=0"]]),
   );
-  assertStrictEq(negotiator.language(["es", "en"]), undefined);
+  assertStrictEquals(negotiator.language(["es", "en"]), undefined);
 });
 
 test("negotiator.language(array) when Accept-Language: en;q=0.8, es should return undefined for empty list", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en;q=0.8, es"]]),
   );
-  assertStrictEq(negotiator.language([]), undefined);
+  assertStrictEquals(negotiator.language([]), undefined);
 });
 
 test("negotiator.language(array) when Accept-Language: en;q=0.8, es should return preferred langauge", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en;q=0.8, es"]]),
   );
-  assertStrictEq(negotiator.language(["en"]), "en");
-  assertStrictEq(negotiator.language(["en", "es"]), "es");
+  assertStrictEquals(negotiator.language(["en"]), "en");
+  assertStrictEquals(negotiator.language(["en", "es"]), "es");
 });
 
 test("negotiator.language(array) when Accept-Language: en;q=0.9, es;q=0.8, en;q=0.7 should use highest perferred order on duplicate", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en;q=0.9, es;q=0.8, en;q=0.7"]]),
   );
-  assertStrictEq(negotiator.language(["es"]), "es");
-  assertStrictEq(negotiator.language(["en", "es"]), "en");
-  assertStrictEq(negotiator.language(["es", "en"]), "en");
+  assertStrictEquals(negotiator.language(["es"]), "es");
+  assertStrictEquals(negotiator.language(["en", "es"]), "en");
+  assertStrictEquals(negotiator.language(["es", "en"]), "en");
 });
 
 test("negotiator.language(array) when Accept-Language: en-US, en;q=0.8 should use prefer en-US over en", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en-US, en;q=0.8"]]),
   );
-  assertStrictEq(negotiator.language(["en", "en-US"]), "en-US");
-  assertStrictEq(negotiator.language(["en-GB", "en-US"]), "en-US");
-  assertStrictEq(negotiator.language(["en-GB", "es"]), "en-GB");
+  assertStrictEquals(negotiator.language(["en", "en-US"]), "en-US");
+  assertStrictEquals(negotiator.language(["en-GB", "en-US"]), "en-US");
+  assertStrictEquals(negotiator.language(["en-GB", "es"]), "en-GB");
 });
 
 test("negotiator.language(array) when Accept-Language: en-US, en-GB should prefer en-US", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en-US, en-GB"]]),
   );
-  assertStrictEq(negotiator.language(["en-US", "en-GB"]), "en-US");
-  assertStrictEq(negotiator.language(["en-GB", "en-US"]), "en-US");
+  assertStrictEquals(negotiator.language(["en-US", "en-GB"]), "en-US");
+  assertStrictEquals(negotiator.language(["en-GB", "en-US"]), "en-US");
 });
 
 test("negotiator.language(array) when Accept-Language: en-US;q=0.8, es should prefer es over en-US", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Language", "en-US;q=0.8, es"]]),
   );
-  assertStrictEq(negotiator.language(["es", "en-US"]), "es");
-  assertStrictEq(negotiator.language(["en-US", "es"]), "es");
-  assertStrictEq(negotiator.language(["en-US", "en"]), "en-US");
+  assertStrictEquals(negotiator.language(["es", "en-US"]), "es");
+  assertStrictEquals(negotiator.language(["en-US", "es"]), "es");
+  assertStrictEquals(negotiator.language(["en-US", "en"]), "en-US");
 });
 
 test("negotiator.language(array) when Accept-Language: nl;q=0.5, fr, de, en, it, es, pt, no, se, fi, ro should use prefer fr over nl", () => {
@@ -241,7 +241,7 @@ test("negotiator.language(array) when Accept-Language: nl;q=0.5, fr, de, en, it,
       [["Accept-Language", "nl;q=0.5, fr, de, en, it, es, pt, no, se, fi, ro"]],
     ),
   );
-  assertStrictEq(negotiator.language(["nl", "fr"]), "fr");
+  assertStrictEquals(negotiator.language(["nl", "fr"]), "fr");
 });
 
 test("negotiator.languages() when no Accept-Language should return *", () => {

@@ -1,38 +1,38 @@
 import {
   assertEquals,
-  assertStrictEq,
-} from "https://deno.land/std/testing/asserts.ts";
+  assertStrictEquals,
+} from "./deps.ts";
 import Negotiator from "../mod.ts";
 
 const { test } = Deno;
 
 test("negotiator.mediaType() when no Accept should return */*", () => {
   const negotiator = new Negotiator(new Headers());
-  assertStrictEq(negotiator.mediaType(), "*/*");
+  assertStrictEquals(negotiator.mediaType(), "*/*");
 });
 
 test("negotiator.mediaType() when Accept: */* should return */*", () => {
   const negotiator = new Negotiator(new Headers([["Accept", "*/*"]]));
-  assertStrictEq(negotiator.mediaType(), "*/*");
+  assertStrictEquals(negotiator.mediaType(), "*/*");
 });
 
 test("negotiator.mediaType() when Accept: application/json should return application/json", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept", "application/json"]]),
   );
-  assertStrictEq(negotiator.mediaType(), "application/json");
+  assertStrictEquals(negotiator.mediaType(), "application/json");
 });
 
 test("negotiator.mediaType() when Accept: application/json;q=0 should return undefined", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept", "application/json;q=0"]]),
   );
-  assertStrictEq(negotiator.mediaType(), undefined);
+  assertStrictEquals(negotiator.mediaType(), undefined);
 });
 
 test("negotiator.mediaType() when Accept: text/* should return text/*", () => {
   const negotiator = new Negotiator(new Headers([["Accept", "text/*"]]));
-  assertStrictEq(negotiator.mediaType(), "text/*");
+  assertStrictEquals(negotiator.mediaType(), "text/*");
 });
 
 test("negotiator.mediaType() when Accept: text/plain, application/json;q=0.5, text/html, */*;q=0.1 should return text/plain", () => {
@@ -41,7 +41,7 @@ test("negotiator.mediaType() when Accept: text/plain, application/json;q=0.5, te
       [["Accept", "text/plain, application/json;q=0.5, text/html, */*;q=0.1"]],
     ),
   );
-  assertStrictEq(negotiator.mediaType(), "text/plain");
+  assertStrictEquals(negotiator.mediaType(), "text/plain");
 });
 
 test("negotiator.mediaType() when Accept: text/plain, application/json;q=0.5, text/html, text/xml, text/yaml, text/javascript, text/csv, text/css, text/rtf, text/markdown, application/octet-stream;q=0.2, */*;q=0.1 should return text/plain", () => {
@@ -53,17 +53,17 @@ test("negotiator.mediaType() when Accept: text/plain, application/json;q=0.5, te
       ]],
     ),
   );
-  assertStrictEq(negotiator.mediaType(), "text/plain");
+  assertStrictEquals(negotiator.mediaType(), "text/plain");
 });
 
 test("negotiator.mediaType(array) when no Accept should return first item in list", () => {
   const negotiator = new Negotiator(new Headers());
-  assertStrictEq(negotiator.mediaType(["text/html"]), "text/html");
-  assertStrictEq(
+  assertStrictEquals(negotiator.mediaType(["text/html"]), "text/html");
+  assertStrictEquals(
     negotiator.mediaType(["text/html", "application/json"]),
     "text/html",
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["application/json", "text/html"]),
     "application/json",
   );
@@ -71,12 +71,12 @@ test("negotiator.mediaType(array) when no Accept should return first item in lis
 
 test("negotiator.mediaType(array) when Accept: */* should return */*", () => {
   const negotiator = new Negotiator(new Headers([["Accept", "*/*"]]));
-  assertStrictEq(negotiator.mediaType(["text/html"]), "text/html");
-  assertStrictEq(
+  assertStrictEquals(negotiator.mediaType(["text/html"]), "text/html");
+  assertStrictEquals(
     negotiator.mediaType(["text/html", "application/json"]),
     "text/html",
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["application/json", "text/html"]),
     "application/json",
   );
@@ -86,7 +86,7 @@ test("negotiator.mediaType(array) when Accept: application/json should be case i
   const negotiator = new Negotiator(
     new Headers([["Accept", "application/json"]]),
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["application/JSON"]),
     "application/JSON",
   );
@@ -96,8 +96,8 @@ test("negotiator.mediaType(array) when Accept: application/json should only retu
   const negotiator = new Negotiator(
     new Headers([["Accept", "application/json"]]),
   );
-  assertStrictEq(negotiator.mediaType(["text/html"]), undefined);
-  assertStrictEq(
+  assertStrictEquals(negotiator.mediaType(["text/html"]), undefined);
+  assertStrictEquals(
     negotiator.mediaType(["text/html", "application/json"]),
     "application/json",
   );
@@ -107,22 +107,22 @@ test("negotiator.mediaType(array) when Accept: application/json;q=0 should retur
   const negotiator = new Negotiator(
     new Headers([["Accept", "application/json;q=0"]]),
   );
-  assertStrictEq(negotiator.mediaType([]), undefined);
+  assertStrictEquals(negotiator.mediaType([]), undefined);
 });
 
 test("negotiator.mediaType(array) when Accept: application/json;q=0.2, text/html should prefer text/html over application/json", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept", "application/json;q=0.2, text/html"]]),
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["application/json"]),
     "application/json",
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["application/json", "text/html"]),
     "text/html",
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["text/html", "application/json"]),
     "text/html",
   );
@@ -130,12 +130,12 @@ test("negotiator.mediaType(array) when Accept: application/json;q=0.2, text/html
 
 test("negotiator.mediaType(array) when Accept: text/* should prefer text media types", () => {
   const negotiator = new Negotiator(new Headers([["Accept", "text/*"]]));
-  assertStrictEq(negotiator.mediaType(["application/json"]), undefined);
-  assertStrictEq(
+  assertStrictEquals(negotiator.mediaType(["application/json"]), undefined);
+  assertStrictEquals(
     negotiator.mediaType(["application/json", "text/html"]),
     "text/html",
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["text/html", "application/json"]),
     "text/html",
   );
@@ -145,12 +145,12 @@ test("negotiator.mediaType(array) when Accept: text/*, text/plain;q=0 should pre
   const negotiator = new Negotiator(
     new Headers([["Accept", "text/*, text/plain;q=0"]]),
   );
-  assertStrictEq(negotiator.mediaType(["application/json"]), undefined);
-  assertStrictEq(
+  assertStrictEquals(negotiator.mediaType(["application/json"]), undefined);
+  assertStrictEquals(
     negotiator.mediaType(["application/json", "text/html"]),
     "text/html",
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["text/html", "application/json"]),
     "text/html",
   );
@@ -162,15 +162,15 @@ test("negotiator.mediaType(array) when Accept: text/plain, application/json;q=0.
       [["Accept", "text/plain, application/json;q=0.5, text/html, */*;q=0.1"]],
     ),
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["application/json", "text/plain", "text/html"]),
     "text/plain",
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["image/jpeg", "text/html"]),
     "text/html",
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(["image/jpeg", "image/gif"]),
     "image/jpeg",
   );
@@ -185,7 +185,7 @@ test("negotiator.mediaType(array) when Accept: text/plain, application/json;q=0.
       ]],
     ),
   );
-  assertStrictEq(
+  assertStrictEquals(
     negotiator.mediaType(
       [
         "text/plain",

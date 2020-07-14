@@ -1,240 +1,240 @@
 import {
   assertEquals,
-  assertStrictEq,
-} from "https://deno.land/std/testing/asserts.ts";
+  assertStrictEquals,
+} from "./deps.ts";
 import Negotiator from "../mod.ts";
 
 const { test } = Deno;
 
 test("negotiator.encoding() when no Accept-Encoding should return identity", () => {
   const negotiator = new Negotiator(new Headers());
-  assertStrictEq(negotiator.encoding(), "identity");
+  assertStrictEquals(negotiator.encoding(), "identity");
 });
 
 test("negotiator.encoding() when Accept-Encoding: * should return *", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Encoding", "*"]]));
-  assertStrictEq(negotiator.encoding(), "*");
+  assertStrictEquals(negotiator.encoding(), "*");
 });
 
 test("negotiator.encoding() when Accept-Encoding: *, gzip should return *", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "*, gzip"]]),
   );
-  assertStrictEq(negotiator.encoding(), "*");
+  assertStrictEquals(negotiator.encoding(), "*");
 });
 
 test("negotiator.encoding() when Accept-Encoding: *, gzip;q=0 should return *", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "*, gzip;q=0"]]),
   );
-  assertStrictEq(negotiator.encoding(), "*");
+  assertStrictEquals(negotiator.encoding(), "*");
 });
 
 test("negotiator.encoding() when Accept-Encoding: *;q=0 should return undefined", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "*;q=0"]]),
   );
-  assertStrictEq(negotiator.encoding(), undefined);
+  assertStrictEquals(negotiator.encoding(), undefined);
 });
 
 test("negotiator.encoding() when Accept-Encoding: *;q=0, identity;q=1 should return identity", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "*;q=0, identity;q=1"]]),
   );
-  assertStrictEq(negotiator.encoding(), "identity");
+  assertStrictEquals(negotiator.encoding(), "identity");
 });
 
 test("negotiator.encoding() when Accept-Encoding: identity should return identity", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "identity"]]),
   );
-  assertStrictEq(negotiator.encoding(), "identity");
+  assertStrictEquals(negotiator.encoding(), "identity");
 });
 
 test("negotiator.encoding() when Accept-Encoding: identity;q=0 should return undefined", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "identity;q=0"]]),
   );
-  assertStrictEq(negotiator.encoding(), undefined);
+  assertStrictEquals(negotiator.encoding(), undefined);
 });
 
 test("negotiator.encoding() when Accept-Encoding: gzip should return gzip", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Encoding", "gzip"]]));
-  assertStrictEq(negotiator.encoding(), "gzip");
+  assertStrictEquals(negotiator.encoding(), "gzip");
 });
 
 test("negotiator.encoding() when Accept-Encoding: gzip, compress;q=0 should return gzip", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "gzip, compress;q=0"]]),
   );
-  assertStrictEq(negotiator.encoding(), "gzip");
+  assertStrictEquals(negotiator.encoding(), "gzip");
 });
 
 test("negotiator.encoding() when Accept-Encoding: gzip, deflate should return gzip", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "gzip, deflate"]]),
   );
-  assertStrictEq(negotiator.encoding(), "gzip");
+  assertStrictEquals(negotiator.encoding(), "gzip");
 });
 
 test("negotiator.encoding() when Accept-Encoding: gzip;q=0.8, deflate should return deflate", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "gzip;q=0.8, deflate"]]),
   );
-  assertStrictEq(negotiator.encoding(), "deflate");
+  assertStrictEquals(negotiator.encoding(), "deflate");
 });
 
 test("negotiator.encoding() when Accept-Encoding: gzip;q=0.8, identity;q=0.5, *;q=0.3 should return gzip", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "gzip;q=0.8, identity;q=0.5, *;q=0.3"]]),
   );
-  assertStrictEq(negotiator.encoding(), "gzip");
+  assertStrictEquals(negotiator.encoding(), "gzip");
 });
 
 test("negotiator.encoding(array) when no Accept-Encoding should return undefined for empty list", () => {
   const negotiator = new Negotiator(new Headers());
-  assertStrictEq(negotiator.encoding([]), undefined);
+  assertStrictEquals(negotiator.encoding([]), undefined);
 });
 
 test("negotiator.encoding(array) when no Accept-Encoding should only match identity", () => {
   const negotiator = new Negotiator(new Headers());
-  assertStrictEq(negotiator.encoding(["identity"]), "identity");
-  assertStrictEq(negotiator.encoding(["gzip"]), undefined);
+  assertStrictEquals(negotiator.encoding(["identity"]), "identity");
+  assertStrictEquals(negotiator.encoding(["gzip"]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: * should return undefined for empty list", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Encoding", "*"]]));
-  assertStrictEq(negotiator.encoding([]), undefined);
+  assertStrictEquals(negotiator.encoding([]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: * should return first item in list", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Encoding", "*"]]));
-  assertStrictEq(negotiator.encoding(["identity"]), "identity");
-  assertStrictEq(negotiator.encoding(["gzip"]), "gzip");
-  assertStrictEq(negotiator.encoding(["gzip", "identity"]), "gzip");
+  assertStrictEquals(negotiator.encoding(["identity"]), "identity");
+  assertStrictEquals(negotiator.encoding(["gzip"]), "gzip");
+  assertStrictEquals(negotiator.encoding(["gzip", "identity"]), "gzip");
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: *, gzip should prefer gzip", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "*, gzip"]]),
   );
-  assertStrictEq(negotiator.encoding(["identity"]), "identity");
-  assertStrictEq(negotiator.encoding(["gzip"]), "gzip");
-  assertStrictEq(negotiator.encoding(["compress", "gzip"]), "gzip");
+  assertStrictEquals(negotiator.encoding(["identity"]), "identity");
+  assertStrictEquals(negotiator.encoding(["gzip"]), "gzip");
+  assertStrictEquals(negotiator.encoding(["compress", "gzip"]), "gzip");
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: *, gzip;q=0 should exclude gzip", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "*, gzip;q=0"]]),
   );
-  assertStrictEq(negotiator.encoding(["identity"]), "identity");
-  assertStrictEq(negotiator.encoding(["gzip"]), undefined);
-  assertStrictEq(negotiator.encoding(["compress", "gzip"]), "compress");
+  assertStrictEquals(negotiator.encoding(["identity"]), "identity");
+  assertStrictEquals(negotiator.encoding(["gzip"]), undefined);
+  assertStrictEquals(negotiator.encoding(["compress", "gzip"]), "compress");
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: *;q=0 should return undefined for empty list", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "*;q=0"]]),
   );
-  assertStrictEq(negotiator.encoding([]), undefined);
+  assertStrictEquals(negotiator.encoding([]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: *;q=0 should match nothing", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "*;q=0"]]),
   );
-  assertStrictEq(negotiator.encoding(["identity"]), undefined);
-  assertStrictEq(negotiator.encoding(["gzip"]), undefined);
+  assertStrictEquals(negotiator.encoding(["identity"]), undefined);
+  assertStrictEquals(negotiator.encoding(["gzip"]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: *;q=0, identity;q=1 should return undefined for empty list", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "*;q=0, identity;q=1"]]),
   );
-  assertStrictEq(negotiator.encoding([]), undefined);
+  assertStrictEquals(negotiator.encoding([]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: *;q=0, identity;q=1 should still match identity", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "*;q=0, identity;q=1"]]),
   );
-  assertStrictEq(negotiator.encoding(["identity"]), "identity");
-  assertStrictEq(negotiator.encoding(["gzip"]), undefined);
+  assertStrictEquals(negotiator.encoding(["identity"]), "identity");
+  assertStrictEquals(negotiator.encoding(["gzip"]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: identity should return undefined for empty list", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "identity"]]),
   );
-  assertStrictEq(negotiator.encoding([]), undefined);
+  assertStrictEquals(negotiator.encoding([]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: identity should only match identity", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "identity"]]),
   );
-  assertStrictEq(negotiator.encoding(["identity"]), "identity");
-  assertStrictEq(negotiator.encoding(["gzip"]), undefined);
+  assertStrictEquals(negotiator.encoding(["identity"]), "identity");
+  assertStrictEquals(negotiator.encoding(["gzip"]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: identity;q=0 should return undefined for empty list", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "identity;q=0"]]),
   );
-  assertStrictEq(negotiator.encoding([]), undefined);
+  assertStrictEquals(negotiator.encoding([]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: identity;q=0 should match nothing", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "identity;q=0"]]),
   );
-  assertStrictEq(negotiator.encoding(["identity"]), undefined);
-  assertStrictEq(negotiator.encoding(["gzip"]), undefined);
+  assertStrictEquals(negotiator.encoding(["identity"]), undefined);
+  assertStrictEquals(negotiator.encoding(["gzip"]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: gzip should return undefined for empty list", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Encoding", "gzip"]]));
-  assertStrictEq(negotiator.encoding([]), undefined);
+  assertStrictEquals(negotiator.encoding([]), undefined);
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: gzip should return client-preferred encodings", () => {
   const negotiator = new Negotiator(new Headers([["Accept-Encoding", "gzip"]]));
-  assertStrictEq(negotiator.encoding(["gzip"]), "gzip");
-  assertStrictEq(negotiator.encoding(["identity", "gzip"]), "gzip");
-  assertStrictEq(negotiator.encoding(["identity"]), "identity");
+  assertStrictEquals(negotiator.encoding(["gzip"]), "gzip");
+  assertStrictEquals(negotiator.encoding(["identity", "gzip"]), "gzip");
+  assertStrictEquals(negotiator.encoding(["identity"]), "identity");
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: gzip, compress;q=0 should not return compress", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "gzip, compress;q=0"]]),
   );
-  assertStrictEq(negotiator.encoding(["compress"]), undefined);
-  assertStrictEq(negotiator.encoding(["deflate", "compress"]), undefined);
-  assertStrictEq(negotiator.encoding(["gzip", "compress"]), "gzip");
+  assertStrictEquals(negotiator.encoding(["compress"]), undefined);
+  assertStrictEquals(negotiator.encoding(["deflate", "compress"]), undefined);
+  assertStrictEquals(negotiator.encoding(["gzip", "compress"]), "gzip");
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: gzip, deflate should return first client-preferred encoding", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "gzip, deflate"]]),
   );
-  assertStrictEq(negotiator.encoding(["deflate", "compress"]), "deflate");
+  assertStrictEquals(negotiator.encoding(["deflate", "compress"]), "deflate");
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: gzip;q=0.8, deflate should return most client-preferred encoding", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "gzip;q=0.8, deflate"]]),
   );
-  assertStrictEq(negotiator.encoding(["gzip"]), "gzip");
-  assertStrictEq(negotiator.encoding(["deflate"]), "deflate");
-  assertStrictEq(negotiator.encoding(["deflate", "gzip"]), "deflate");
+  assertStrictEquals(negotiator.encoding(["gzip"]), "gzip");
+  assertStrictEquals(negotiator.encoding(["deflate"]), "deflate");
+  assertStrictEquals(negotiator.encoding(["deflate", "gzip"]), "deflate");
 });
 
 test("negotiator.encoding(array) when Accept-Encoding: gzip;q=0.8, identity;q=0.5, *;q=0.3 should return most client-preferred encoding", () => {
   const negotiator = new Negotiator(
     new Headers([["Accept-Encoding", "gzip;q=0.8, identity;q=0.5, *;q=0.3"]]),
   );
-  assertStrictEq(negotiator.encoding(["gzip"]), "gzip");
-  assertStrictEq(negotiator.encoding(["compress", "identity"]), "identity");
+  assertStrictEquals(negotiator.encoding(["gzip"]), "gzip");
+  assertStrictEquals(negotiator.encoding(["compress", "identity"]), "identity");
 });
 
 test("negotiator.encodings() when no Accept-Encoding should return identity", () => {
