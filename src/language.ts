@@ -7,7 +7,7 @@
  * MIT Licensed
  */
 
-import { Priority } from "./types.ts";
+import type { Priority } from "./types.ts";
 
 export { preferredLanguages };
 
